@@ -13,19 +13,27 @@ export default function Card() {
 
   useEffect(() => {
     const handleKeydown = (e) => {
-      if (e.code === "Space") {
-        count > 4 ? setCount(5) : setCount(count + 1);
+      if (e.code !== "Space") {
+        return;
       }
+      setCount((prev) => {
+        return prev > 4 ? 5 : prev + 1;
+      });
     };
     window.addEventListener("keydown", handleKeydown);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
     };
-  }, [count]);
+  }, []);
 
   return (
-    <div className={cn("bg-[#bef227] w-full h-full sm:w-[476px] sm:h-[615px] shadow-[0_25px_121px_rgba(0,0,0,0.5)] rounded-none sm:rounded-xl flex flex-col items-center transition-all duration-[0.4s]", { "bg-[#a3d11b]": locked })}>
+    <div
+      className={cn(
+        "bg-[#bef227] w-full h-full sm:w-[476px] sm:h-[615px] shadow-[0_25px_121px_rgba(0,0,0,0.5)] rounded-none sm:rounded-xl flex flex-col items-center transition-all duration-[0.4s]",
+        { "bg-[#a3d11b]": locked }
+      )}
+    >
       <Title locked={locked} />
       <Count count={count} />
       <ResetButton setCount={setCount} />

@@ -1,8 +1,10 @@
 import { ResetIcon } from "@radix-ui/react-icons";
+import { useCounterActions } from "./stores/counterStore";
 
-export default function ResetButton({ setCount }) {
+export default function ResetButton() {
+  const { resetCount } = useCounterActions();
 	const handleClick = (event) => {
-		setCount(0);
+		resetCount();
 		event.currentTarget.blur();
 	}
 

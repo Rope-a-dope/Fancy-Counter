@@ -1,14 +1,11 @@
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { cn } from "./utils";
-export default function CountButton({ type, setCount, locked }) {
+import { useCounterActions, useLocked } from "./stores/counterStore";
+export default function CountButton({ type }) {
+  const { increaseCount, decreaseCount } = useCounterActions();
+  const locked = useLocked();
   const handleClick = (event) => {
-    setCount((prev) => {
-      if (type === "minus") {
-        return prev < 1 ? 0 : prev - 1;
-      }
-      return prev > 4 ? 5 : prev + 1;
-    });
-
+    type === "minus" ? decreaseCount() : increaseCount();
     event.currentTarget.blur();
   };
 

@@ -1,31 +1,29 @@
-import { useState } from "react";
-import Count from "./Count";
+import { useEffect } from "react";
 import ButtonContainer from "./ButtonContainer";
+import Count from "./Count";
+import CountButton from "./CountButton";
 import ResetButton from "./ResetButton";
 import Title from "./Title";
-import CountButton from "./CountButton";
-import { useEffect } from "react";
+import { useCounterActions, useLocked } from "./stores/counterStore";
 import { cn } from "./utils";
 
 export default function Card() {
-  const [count, setCount] = useState(0);
-  const locked = count === 5;
+  const locked = useLocked();
+  const { increaseCount } = useCounterActions();
 
   useEffect(() => {
     const handleKeydown = (e) => {
       if (e.code !== "Space") {
         return;
       }
-      setCount((prev) => {
-        return prev > 4 ? 5 : prev + 1;
-      });
+      increaseCount();
     };
     window.addEventListener("keydown", handleKeydown);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
     };
-  }, []);
+  }, [increaseCount]);
 
   return (
     <div
@@ -34,12 +32,12 @@ export default function Card() {
         { "bg-[#a3d11b]": locked }
       )}
     >
-      <Title locked={locked} />
-      <Count count={count} />
-      <ResetButton setCount={setCount} />
+      <Title />
+      <Count />
+      <ResetButton />
       <ButtonContainer>
-        <CountButton type="minus" setCount={setCount} locked={locked} />
-        <CountButton type="plus" setCount={setCount} locked={locked} />
+        <CountButton type="minus" />
+        <CountButton type="plus" />
       </ButtonContainer>
     </div>
   );
